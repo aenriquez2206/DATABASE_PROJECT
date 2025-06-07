@@ -1,0 +1,264 @@
+1)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE alumnos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  código INTEGER NOT NULL
+);
+
+--migrate:down
+
+DROP TABLE alumnos;
+
+2)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE distritos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR(30) NOT NULL
+);
+
+--migrate:down
+
+DROP TABLE distritos;
+
+3)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE notificaciones (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  estado BOOLEAN NOT NULL,
+  nombre VARCHAR(30) NOT NULL 					
+);
+
+--migrate:down
+
+DROP TABLE notificaciones;
+
+4)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE red_pagos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR(20) NOT NULL
+);
+
+--migrate:down
+
+DROP TABLE red_pagos;
+
+5)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE bancos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR(30) NOT NULL
+);
+
+--migrate:down
+
+DROP TABLE bancos;
+
+6)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE perfiles (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  celular INTEGER NOT NULL,
+  DNI INTEGER NOT NULL,
+  nombre VARCHAR(40) NOT NULL,
+  apellidos VARCHAR(40) NOT NULL,
+  fecha_nacimiento DATE NOT NULL,
+  correo VARCHAR(50) NOT NULL,
+  contraseña VARCHAR(20) NOT NULL
+);
+
+--migrate:down
+
+DROP TABLE perfiles;
+
+7)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE estaciones (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR(40) NOT NULL,
+  id_distrito INTEGER NOT NULL,
+  FOREIGN KEY (id_distrito) REFERENCES distritos (id)
+);
+
+--migrate:down
+
+DROP TABLE estaciones;
+
+8)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE tarjetas_corredor (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id_tarjeta_fisica INTEGER NOT NULL,
+  id_perfil FLOAT NOT NULL,
+  FOREIGN KEY (id_perfil) REFERENCES perfiles (id)
+);
+
+--migrate:down
+
+DROP TABLE tarjetas_corredor;
+
+9)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE metodo_pagos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR(30) NOT NULL,
+  id_perfil INTEGER NOT NULL,
+  id_banco INTEGER NOT NULL,
+  FOREIGN KEY (id_perfil) REFERENCES perfiles (id),
+  FOREIGN KEY (id_banco) REFERENCES bancos (id)
+);
+
+--migrate:down
+
+DROP TABLE metodo_pagos;
+
+10)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE tarjetas_universitario (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id_tarjeta_corredor INTEGER NOT NULL,
+  id_alumno INTEGER NOT NULL,
+  FOREIGN KEY (id_tarjeta_corredor) REFERENCES tarjetas_corredor (id),
+  FOREIGN KEY (id_alumno) REFERENCES alumnos (id)
+);
+
+--migrate:down
+
+DROP TABLE tarjetas_universitario;
+
+11)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE tarjetas_general (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id_tarjeta_corredor INTEGER NOT NULL,
+  FOREIGN KEY (id_tarjeta_corredor) REFERENCES tarjetas_corredor (id)
+);
+
+--migrate:down
+
+DROP TABLE tarjetas_general;
+
+12)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE transacciones_pagos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  monto FLOAT NOT NULL,
+  fecha DATE NOT NULL,
+  id_tarjeta_corredor INTEGER NOT NULL,
+  FOREIGN KEY (id_tarjeta_corredor) REFERENCES tarjetas_corredor (id)
+);
+
+--migrate:down
+
+DROP TABLE transacciones_pagos;
+
+13)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE transacciones_ingresos (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  monto FLOAT NOT NULL,
+  fecha DATE NOT NULL,
+  id_metodo_pago INTEGER NOT NULL,
+  id_tarjeta_corredor INTEGER NOT NULL,
+  FOREIGN KEY (id_metodo_pago) REFERENCES metodo_pagos (id),
+  FOREIGN KEY (id_tarjeta_corredor) REFERENCES tarjetas_corredor (id)
+);
+
+--migrate:down
+
+DROP TABLE transacciones_ingresos;
+
+14)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE app_billeteras_digitales (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR(15) NOT NULL,
+  id_metodo_pago INTEGER NOT NULL,
+  FOREIGN KEY (id_metodo_pago) REFERENCES metodo_pagos (id)
+);
+
+--migrate:down
+
+DROP TABLE app_billeteras_digitales;
+
+15)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE tarjetas (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  numero_tarjeta INTEGER NOT NULL,
+  fecha_caducidad DATE NOT NULL,
+  cvv INTEGER NOT NULL,
+  nombre_titular VARCHAR(50) NOT NULL,
+  id_metodo_pago INTEGER NOT NULL,
+  id_red_pago INTEGER NOT NULL,
+  FOREIGN KEY (id_metodo_pago) REFERENCES metodo_pagos (id),
+  FOREIGN KEY (id_red_pago) REFERENCES red_pagos (id)
+);
+
+--migrate:down
+
+DROP TABLE tarjetas;
+
+16)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE viajes (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  fecha DATE NOT NULL,
+  final_estacion_id INTEGER NOT NULL,
+  inicial_estacion_id INTEGER NOT NULL,
+  FOREIGN KEY (final_estacion_id) REFERENCES estaciones (id),
+  FOREIGN KEY (inicial_estacion_id) REFERENCES estaciones (id)
+);
+
+--migrate:down
+
+DROP TABLE viajes;
+
+17)-------------------------------------------------
+
+-- migrate:up
+
+CREATE TABLE notificaciones_perfiles (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id_notificacion INTEGER NOT NULL,
+  id_perfil INTEGER NOT NULL,
+  FOREIGN KEY (id_notificacion) REFERENCES notifaciones (id),
+  FOREIGN KEY (id_perfil) REFERENCES perfiles (id)
+);
+
+--migrate:down
+
+DROP TABLE notificaciones_perfiles;
