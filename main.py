@@ -6,30 +6,35 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    jugadores = []
+    perfiles = []
     with Database() as db:
-        jugadores = jugadores = db.consultar('''
-SELECT 
-J.id, J.ranking, J.nombre AS jugador, J.ovr, J.estatura, J.peso, J.edad,
-P.nombre AS posicion, N.nombre AS nacionalidad, N.imagen AS bandera, PI.nombre AS pie
-FROM jugadores J 
-INNER JOIN posiciones P ON J.posicion_id = P.id 
-INNER JOIN nacionalidades N ON N.id = J.nacionalidad_id 
-INNER JOIN pies PI ON PI.id = J.pie_id 
-LIMIT 20;
-''')
-        # for jugador in jugadores:
-            # print(dict(jugador))
-    return render_template('index.html', lista_jugadores = jugadores)
+        perfiles = db.consultar('''
+        SELECT*FROM perfiles''')
+        #for perfil in perfiles:
+         #   print(dict(perfil))
+    return render_template('index.html', lista_perfiles= perfiles)
 
-@app.route('/nacionalidades')
-def nacionalidades():
-    paises = []
+@app.route('/viajes')
+def viajes():
+    viajes = []
     with Database() as db:
-        paises = db.consultar('SELECT id, nombre AS name , imagen FROM nacionalidades;')
-        # for jugador in jugadores:
-            # print(dict(jugador))
-    return render_template('nacionalidades.html', lista_paises = paises)
+        viajes = db.consultar(
+            '''
+            SELECT V.id, V.fecha ,P.nombre as Nombre ,P. apellidos as Apellidos,
+            EI.nombre as Estacion_inicial, DI.nombre as Distrito_Inicial,
+            EF.nombre as Estacion_final ,DF.nombre as Distrito_Final
+            FROM viajes As V
+            INNER JOIN estaciones EF ON V.final_estacion_id =EF.id 
+            INNER JOIN distritos DF ON EF.id_distrito=DF.id 
+            INNER JOIN estaciones EI ON V.inicial_estacion_id =EI.id
+            INNER JOIN distritos DI ON EI.id_distrito=DI.id 
+            INNER JOIN perfiles P ON V.perfil_id=P.id
+            ORDER BY V.fecha DESC;
+            '''
+        )
+        # for viaje in viaje:
+            # print(dict(viaje))
+    return render_template('viajes.html', lista_viajes = viajes)
 
 @app.route('/nosotros')
 def nosotros():
@@ -48,3 +53,5 @@ def contacto():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+

@@ -103,4 +103,4 @@ INSERT INTO alumnos (id, código) VALUES (100, 84396783);
 
 --migrate:down 
 
-DELETE FROM posiciones;
+DELETE FROM alumnos;

@@ -6,7 +6,7 @@
     <title>Mi Página de Inicio</title>
     <style>
         /* Estilos generales */
-        body {
+         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             margin: 0;
@@ -15,7 +15,7 @@
         }
 
         header {
-            background-color: #0073e6;
+            background-color: #c67d2a;
             color: white;
             padding: 20px;
             text-align: center;
@@ -61,14 +61,14 @@
 
     <!-- Header -->
     <header>
-        <h1>Bienvenido a Servicios</h1>
-        <p>Una pequeña descripción o lema puede ir aquí.</p>
+        <h1>Bienvenido a Viajes</h1>
+        <p>Se muestran los viajes realizados por los clientes de menor a mayor año.</p>
     </header>
 
     <!-- Navbar -->
     <nav>
         <a href="/">Inicio</a>
-        <a href="/nacionalidades">nacionalidades</a>
+        <a href="/viajes">Viajes</a>
         <a href="/nosotros">nostros</a>
         <a href="/servicios">Servicios</a>
         <a href="/contacto">Contacto</a>
@@ -79,28 +79,36 @@
         <h2>Bienvenido</h2>
         <p>Este es un ejemplo básico de una página web con estilos embebidos en el head.</p>
         <p>Aquí puedes agregar más contenido según lo que necesites.</p>
-    </section>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Fecha</th>
                     <th>Nombre</th>
-                    <th>imagen</th>
+                    <th>Apellidos</th>
+                    <th>Estacion inicial</th>
+                    <th>Distrio inicial</th>
+                    <th>Estacion final</th>
+                    <th>Distrio final</th>
                 </tr>
             </thead>
             <tbody>
-                {% for pais in lista_paises %}
+                {% for viaje in lista_viajes %}
                     <tr>
-                        <td>{{ pais['id'] }}</td>
-                        <td>{{ pais['name'] }}</td>
-                        <td>{{ pais['imagen'] }}</td>
-                        <td>
-                            <img src="{{ pais['url'] }}" alt="" width=30 height=30>
-                        </td>
+                        <td>{{ viaje['id'] }}</td>
+                        <td>{{ viaje['fecha'] }}</td>
+                        <td>{{ viaje['Nombre'] }}</td>
+                        <td>{{ viaje['apellidos'] }}</td>
+                        <td>{{ viaje['Estacion_inicial'] }}</td>
+                        <td>{{ viaje['Distrito_inicial'] }}</td>
+                        <td>{{ viaje['Estacion_final'] }}</td>
+                        <td>{{ viaje['Distrito_final'] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </section>
+
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Mi Página. Todos los derechos reservados.</p>

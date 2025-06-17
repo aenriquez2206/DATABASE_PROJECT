@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Inicio</title>
+    <title>PROYECTO BASE DE DATOS</title>
     <style>
         /* Estilos generales */
         body {
@@ -15,7 +15,7 @@
         }
 
         header {
-            background-color: #0073e6;
+            background-color: #c67d2a;
             color: white;
             padding: 20px;
             text-align: center;
@@ -61,14 +61,14 @@
 
     <!-- Header -->
     <header>
-        <h1>Bienvenido a Mi Página de Inicio</h1>
-        <p>Una pequeña descripción o lema puede ir aquí.</p>
+        <h1>SISTEMA DE GESTION DE USUARIOS</h1>
+        <p>Algo</p>
     </header>
 
     <!-- Navbar -->
    <nav>
         <a href="/">Inicio</a>
-        <a href="/nacionalidades">nacionalidades</a>
+        <a href="/viajes">Viajes</a>
         <a href="/nosotros">nostros</a>
         <a href="/servicios">Servicios</a>
         <a href="/contacto">Contacto</a>
@@ -90,26 +90,28 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Ranking</th>
-                    <th>Estatura</th>
-                    <th>Peso</th>
-                    <th>Edad</th>
-                    <th>Imagen</th>
+                    <th>user_id</th>
+                    <th>celular</th>
+                    <th>DNI</th>
+                    <th>nombre</th>
+                    <th>apellidos</th>
+                    <th>fecha de nacimiento</th>
+                    <th>correo</th>
+                    <th>contraseña</th>
                 </tr>
             </thead>
             <tbody>
-                {% for jugador in lista_jugadores %}
+                {% for perfil in lista_perfiles %}
                     <tr>
-                        <td>{{ jugador['id'] }}</td>
-                        <td>{{ jugador['nombre'] }}</td>
-                        <td>{{ jugador['ranking'] }}</td>
-                        <td>{{ jugador['estatura']/100 }} m</td>
-                        <td>{{ jugador['peso'] }} kg</td>
-                        <td>{{ jugador['edad'] }}</td>
-                        <td>
-                            <img src="{{ jugador['url'] }}" alt="" width=30 height=30>
-                        </td>
+                        <td>{{ perfil['id'] }}</td>
+                        <td>{{ perfil['user_id'] }}</td>
+                        <td>{{ perfil['celular'] }}</td>
+                        <td>{{ perfil['DNI'] }}</td>
+                        <td>{{ perfil['nombre'] }}</td>
+                        <td>{{ perfil['apellidos'] }}</td>
+                        <td>{{ perfil['fecha_nacimiento'] }}</td>
+                        <td>{{ perfil['correo'] }}</td>
+                        <td>{{ perfil['contraseña'] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
