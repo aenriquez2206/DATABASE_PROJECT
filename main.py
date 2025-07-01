@@ -20,7 +20,7 @@ def viajes():
     with Database() as db:
         viajes = db.consultar(
             '''
-            SELECT V.id, V.fecha ,P.nombre as Nombre ,P. apellidos as Apellidos,
+            SELECT V.id, V.fecha ,P.nombre || " "|| P. apellidos as Nombre_Completo,
             EI.nombre as Estacion_inicial, DI.nombre as Distrito_Inicial,
             EF.nombre as Estacion_final ,DF.nombre as Distrito_Final
             FROM viajes As V

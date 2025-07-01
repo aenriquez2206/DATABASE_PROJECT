@@ -55,6 +55,78 @@
             width: 100%;
             bottom: 0;
         }
+         table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    thead {
+        background-color: #7eb6ff;
+        color: #fff;
+    }
+
+    thead th {
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 16px;
+        border-bottom: 2px solid #5a9ee0;
+    }
+
+    tbody tr {
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+        background-color: #e0f0ff;
+    }
+
+    tbody td {
+        padding: 10px 15px;
+        font-size: 15px;
+        color: #333;
+    }
+
+    td:nth-child(9) {
+        font-family: monospace;
+        letter-spacing: 1px;
+        color: #d14;
+    }
+
+    /* Responsive (opcional) */
+    @media (max-width: 768px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+
+        thead {
+            display: none;
+        }
+
+        tbody tr {
+            margin-bottom: 15px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        tbody td {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #666;
+        }
+    }
     </style>
 </head>
 <body>
@@ -67,7 +139,7 @@
 
     <!-- Navbar -->
     <nav>
-        <a href="/">Inicio</a>
+        <a href="/">Usuarios</a>
         <a href="/viajes">Viajes</a>
         <a href="/nosotros">nostros</a>
         <a href="/servicios">Servicios</a>
@@ -84,8 +156,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
+                    <th>Nombre completo</th>
                     <th>Estacion inicial</th>
                     <th>Distrito inicial</th>
                     <th>Estacion final</th>
@@ -97,8 +168,7 @@
                     <tr>
                         <td>{{ viaje['id'] }}</td>
                         <td>{{ viaje['fecha'] }}</td>
-                        <td>{{ viaje['Nombre'] }}</td>
-                        <td>{{ viaje['apellidos'] }}</td>
+                        <td>{{ viaje['Nombre_Completo'] }}</td>
                         <td>{{ viaje['Estacion_inicial'] }}</td>
                         <td>{{ viaje['Distrito_inicial'] }}</td>
                         <td>{{ viaje['Estacion_final'] }}</td>
