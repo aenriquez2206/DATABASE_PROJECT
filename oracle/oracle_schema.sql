@@ -1,25 +1,25 @@
--- 1 nombre app billeteras digitales
-CREATE TABLE app_billeteras_digitales(
+-- 1 nombre app billeteras digitales(si)
+CREATE TABLE nombre_app_billeteras(
 	id NUMBER(7) PRIMARY KEY,
 	nombre VARCHAR2(30)
 );
 
-ALTER TABLE app_billeteras_digitales ADD (
-  CONSTRAINT app_billeteras_digitales_pk PRIMARY KEY (ID));
+ALTER TABLE nombre_app_billeteras ADD (
+  CONSTRAINT nombre_app_billeteras_pk PRIMARY KEY (ID));
 
-CREATE SEQUENCE app_billeteras_digitales_seq START WITH 1;
+CREATE SEQUENCE nombre_app_billeteras_seq START WITH 1;
 
-CREATE OR REPLACE TRIGGER app_billeteras_digitales_pk 
-BEFORE INSERT ON app_billeteras_digitales 
+CREATE OR REPLACE TRIGGER nombre_app_billeteras_pk 
+BEFORE INSERT ON nombre_app_billeteras 
 FOR EACH ROW
 
 BEGIN
-  SELECT app_billeteras_digitales_seq.NEXTVAL
+  SELECT nombre_app_billeteras_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
 END;
 /
--- 2 alumnos
+-- 2 alumnos(si)
 
 CREATE TABLE alumnos(
 	id NUMBER(7) PRIMARY KEY,
@@ -41,7 +41,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 3 distritos
+-- 3 distritos(si)
 
 CREATE TABLE distritos(
 	id NUMBER(7) PRIMARY KEY,
@@ -63,11 +63,11 @@ BEGIN
   FROM   dual;
 END;
 /
--- 4 notificaciones
+-- 4 notificaciones(si)
 
 CREATE TABLE notificaciones(
 	id NUMBER(7) PRIMARY KEY,
-	name VARCHAR2(30)
+	nombre VARCHAR2(30)
 );
 
 ALTER TABLE notificaciones ADD (
@@ -85,10 +85,10 @@ BEGIN
   FROM   dual;
 END;
 /
--- 5 red pago
+-- 5 red pago(si)
 CREATE TABLE red_pagos(
 	id NUMBER(7) PRIMARY KEY,
-	name VARCHAR2(30)
+	nombre VARCHAR2(30)
 );
 
 ALTER TABLE red_pagos ADD (
@@ -106,7 +106,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 6 bancos
+-- 6 bancos(si)
 CREATE TABLE bancos(
 	id NUMBER(7) PRIMARY KEY,
 	nombre VARCHAR2(30)
@@ -127,7 +127,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 7 perfiles
+-- 7 perfiles(si)
 CREATE TABLE perfiles(
 	id NUMBER(7) PRIMARY KEY,
   user_id NUMBER(10),
@@ -155,7 +155,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 8 estaciones
+-- 8 estaciones(si)
 CREATE TABLE estaciones(
 	id NUMBER(7) PRIMARY KEY,
   nombre VARCHAR2(40),
@@ -178,7 +178,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 9 tarjetas corredor
+-- 9 tarjetas corredor(si)
 CREATE TABLE tarjetas_corredor(
 	id NUMBER(7) PRIMARY KEY,
   id_tarjeta_fisica NUMBER(10),
@@ -202,7 +202,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 10 metodos de pago
+-- 10 metodos de pago(si)
 CREATE TABLE metodo_pagos(
 	id NUMBER(7) PRIMARY KEY,
 	id_banco NUMBER(7),
@@ -226,12 +226,12 @@ BEGIN
   FROM   dual;
 END;
 /
--- 11 tarjetas univesitaio
+-- 11 tarjetas univesitaio(si)
 
 CREATE TABLE tarjetas_universitarios(
 	id NUMBER(7) PRIMARY KEY,
   id_tarjeta_corredor NUMBER(10),
-	id_alumno NUMBER(10)
+	id_alumno NUMBER(10),
   FOREIGN KEY(id_tarjeta_corredor) REFERENCES tarjetas_corredor,
   FOREIGN KEY(id_alumno) REFERENCES alumnos
 );
@@ -252,7 +252,7 @@ BEGIN
 END;
 /
 
--- 12 tarjetas general
+-- 12 tarjetas general(si)
 
 CREATE TABLE tarjetas_general(
 	id NUMBER(7) PRIMARY KEY,
@@ -275,7 +275,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 13 transacciones pagos
+-- 13 transacciones pagos(si)
 
 CREATE TABLE transacciones_pagos(
 	id NUMBER(7) PRIMARY KEY,
@@ -300,7 +300,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 14 transacciones ingresos
+-- 14 transacciones ingresos(si)
 
 CREATE TABLE transacciones_ingreso(
 	id NUMBER(7) PRIMARY KEY,
@@ -327,14 +327,14 @@ BEGIN
   FROM   dual;
 END;
 /
--- 15 app billeteras digitales
+-- 15 app billeteras digitales(si)
 
 CREATE TABLE app_billeteras_digitales(
 	id NUMBER(7) PRIMARY KEY,
 	id_metodo_pago NUMBER(7),
-  id_nombre_app_billetera_digital NUMBER(7),
+  id_nombre_app_billetera NUMBER(7),
 	FOREIGN KEY (id_metodo_pago) REFERENCES metodo_pagos,
-  FOREIGN KEY (id_nombre_app_billetera_digital) REFERENCES nombre_app_billeteras_digitales
+  FOREIGN KEY (id_nombre_app_billetera) REFERENCES nombre_app_billeteras
 );
 
 ALTER TABLE app_billeteras_digitales ADD (
@@ -353,10 +353,10 @@ BEGIN
 END;
 /
 
--- 16 tarjeta
+-- 16 tarjeta(si)
 CREATE TABLE tarjetas(
 	id NUMBER(7) PRIMARY KEY,
-  numero_tarjeta NUMBER(50),
+  numero_tarjeta NUMBER(20),
   fecha_caducidad DATE,
   cvv NUMBER(7),
   nombre_titular VARCHAR2(100),
@@ -414,7 +414,7 @@ CREATE TABLE notificaciones_perfiles(
 	id NUMBER(7) PRIMARY KEY,
   id_notificacion NUMBER(7),
   id_perfil NUMBER(7),
-  FOREIGN KEY (perfil_id) REFERENCES perfiles,
+  FOREIGN KEY (id_perfil) REFERENCES perfiles,
   FOREIGN KEY (id_notificacion) REFERENCES notificaciones
 );
 
@@ -431,5 +431,28 @@ BEGIN
   SELECT notificaciones_perfiles_seq.NEXTVAL
   INTO   :new.id
   FROM   dual;
+END;
+/
+
+--trigers para resta de transacciones pagos
+
+CREATE OR REPLACE TRIGGER actualizar_saldo_pago
+AFTER INSERT ON transacciones_pagos
+FOR EACH ROW
+BEGIN
+  UPDATE tarjetas_corredor
+  SET saldo = saldo   - :NEW.monto
+  WHERE id = :NEW.id_tarjeta_corredor;
+END;
+/
+
+--trigers para suma de transacciones ingresos
+CREATE OR REPLACE TRIGGER actualizar_saldo_ingreso
+AFTER INSERT ON transacciones_ingreso
+FOR EACH ROW
+BEGIN
+  UPDATE tarjetas_corredor
+  SET saldo = saldo + :NEW.monto
+  WHERE id = :NEW.id_tarjeta_corredor;
 END;
 /
