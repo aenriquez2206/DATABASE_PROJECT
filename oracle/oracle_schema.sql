@@ -434,19 +434,30 @@ BEGIN
 END;
 /
 
---trigers para resta de transacciones pagos
+--TRIGGERS
+--triggers para resta de transacciones pagos
 
 CREATE OR REPLACE TRIGGER actualizar_saldo_pago
 AFTER INSERT ON transacciones_pagos
 FOR EACH ROW
+DECLARE
+  v_saldo_actual NUMBER;
 BEGIN
-  UPDATE tarjetas_corredor
-  SET saldo = saldo   - :NEW.monto
+  SELECT saldo INTO v_saldo_actual
+  FROM tarjetas_corredor
   WHERE id = :NEW.id_tarjeta_corredor;
+
+  IF v_saldo_actual >= :NEW.monto THEN
+    UPDATE tarjetas_corredor
+    SET saldo = saldo - :NEW.monto
+    WHERE id = :NEW.id_tarjeta_corredor;
+  ELSE
+    RAISE_APPLICATION_ERROR(-20001, 'Saldo insuficiente para realizar el pago.');
+  END IF;
 END;
 /
 
---trigers para suma de transacciones ingresos
+--triggers para suma de transacciones ingresos
 CREATE OR REPLACE TRIGGER actualizar_saldo_ingreso
 AFTER INSERT ON transacciones_ingreso
 FOR EACH ROW
