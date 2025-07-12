@@ -1,4 +1,4 @@
--- 1 nombre app billeteras digitales(si)
+-- 1 nombre app billeteras digitales
 CREATE TABLE nombre_app_billeteras(
 	id NUMBER(7) PRIMARY KEY,
 	nombre VARCHAR2(30)
@@ -19,7 +19,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 2 alumnos(si)
+-- 2 alumnos
 
 CREATE TABLE alumnos(
 	id NUMBER(7) PRIMARY KEY,
@@ -41,7 +41,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 3 distritos(si)
+-- 3 distritos
 
 CREATE TABLE distritos(
 	id NUMBER(7) PRIMARY KEY,
@@ -63,7 +63,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 4 notificaciones(si)
+-- 4 notificaciones
 
 CREATE TABLE notificaciones(
 	id NUMBER(7) PRIMARY KEY,
@@ -85,7 +85,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 5 red pago(si)
+-- 5 red pago
 CREATE TABLE red_pagos(
 	id NUMBER(7) PRIMARY KEY,
 	nombre VARCHAR2(30)
@@ -106,7 +106,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 6 bancos(si)
+-- 6 bancos
 CREATE TABLE bancos(
 	id NUMBER(7) PRIMARY KEY,
 	nombre VARCHAR2(30)
@@ -127,7 +127,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 7 perfiles(si)
+-- 7 perfiles
 CREATE TABLE perfiles(
 	id NUMBER(7) PRIMARY KEY,
   user_id NUMBER(10),
@@ -155,7 +155,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 8 estaciones(si)
+-- 8 estaciones
 CREATE TABLE estaciones(
 	id NUMBER(7) PRIMARY KEY,
   nombre VARCHAR2(40),
@@ -178,7 +178,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 9 tarjetas corredor(si)
+-- 9 tarjetas corredor
 CREATE TABLE tarjetas_corredor(
 	id NUMBER(7) PRIMARY KEY,
   id_tarjeta_fisica NUMBER(10),
@@ -202,7 +202,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 10 metodos de pago(si)
+-- 10 metodos de pago
 CREATE TABLE metodo_pagos(
 	id NUMBER(7) PRIMARY KEY,
 	id_banco NUMBER(7),
@@ -226,7 +226,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 11 tarjetas univesitaio(si)
+-- 11 tarjetas univesitaio
 
 CREATE TABLE tarjetas_universitarios(
 	id NUMBER(7) PRIMARY KEY,
@@ -252,7 +252,7 @@ BEGIN
 END;
 /
 
--- 12 tarjetas general(si)
+-- 12 tarjetas general
 
 CREATE TABLE tarjetas_general(
 	id NUMBER(7) PRIMARY KEY,
@@ -275,7 +275,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 13 transacciones pagos(si)
+-- 13 transacciones pagos
 
 CREATE TABLE transacciones_pagos(
 	id NUMBER(7) PRIMARY KEY,
@@ -300,7 +300,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 14 transacciones ingresos(si)
+-- 14 transacciones ingresos
 
 CREATE TABLE transacciones_ingreso(
 	id NUMBER(7) PRIMARY KEY,
@@ -327,7 +327,7 @@ BEGIN
   FROM   dual;
 END;
 /
--- 15 app billeteras digitales(si)
+-- 15 app billeteras digitales
 
 CREATE TABLE app_billeteras_digitales(
 	id NUMBER(7) PRIMARY KEY,
@@ -353,7 +353,7 @@ BEGIN
 END;
 /
 
--- 16 tarjeta(si)
+-- 16 tarjeta
 CREATE TABLE tarjetas(
 	id NUMBER(7) PRIMARY KEY,
   numero_tarjeta NUMBER(20),
